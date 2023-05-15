@@ -1,7 +1,8 @@
 import { List } from './ImageGallery.styled';
-import {PixabayAPI} from '../../services/pixabay-api';
+import { PixabayAPI } from '../../services/pixabay-api';
 import { Component } from 'react';
 import { ImageGalleryItem } from './ImageGalleryItem';
+import { Button } from 'components/common/Button';
 
 const Status = {
   IDLE: 'idle',
@@ -18,7 +19,7 @@ export class ImageGallery extends Component {
     error: null,
     status: Status.IDLE,
   };
-    
+
   componentDidUpdate(prevProps, prevState) {
     const prevWord = prevProps.searchedWord;
     const nextWord = this.props.searchedWord;
@@ -27,6 +28,8 @@ export class ImageGallery extends Component {
 
     if (prevWord !== nextWord) {
       this.setState({ status: Status.PENDING });
+
+      pixabayAPI.page = 1;
 
       pixabayAPI
         .fetchPhotos(nextWord)
@@ -39,20 +42,35 @@ export class ImageGallery extends Component {
     }
   }
 
- render() {
-        const { images, status } = this.state;
+  handleMoreBtnClick = (e) => {
+    console.log(e)
+  }
 
-            if (status === 'idle') {
-      return <div>Введіть запит для пошуку.</div>;
+  render() {
+    const { images, status } = this.state;
+
+    if (status === 'idle') {
+      return <div>Введіть запит для пошуку.</div>
     }
-        if (status === 'resolved') {
-          return <List>
-          {images && images.map((image) => {
+
+    if (status === 'resolved') {
+      return (
+        <List>
+          {images &&
+            images.map(image => {
               return (
-                  <ImageGalleryItem key={image.id} alt={image.tags} webformatURL={image.webformatURL} largeImageURL={image.largeImageURL} />
-              )
-          })}
-      </List>
-      }
+                <ImageGalleryItem
+                  key={image.id}
+                  alt={image.tags}
+                  webformatURL={image.webformatURL}
+                  largeImageURL={image.largeImageURL}
+                />
+              );
+            })}
+                  <Button type='button' onClick={this.handleMoreBtnClick}></Button>
+
+        </List>
+      );
+    }
   }
 }
