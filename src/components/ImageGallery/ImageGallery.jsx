@@ -39,13 +39,20 @@ export class ImageGallery extends Component {
     }
   }
 
-  render() {
-      return <List>
-          {this.state.images && this.state.images.map((image) => {
+ render() {
+        const { images, status } = this.state;
+
+            if (status === 'idle') {
+      return <div>Введіть запит для пошуку.</div>;
+    }
+        if (status === 'resolved') {
+          return <List>
+          {images && images.map((image) => {
               return (
                   <ImageGalleryItem key={image.id} alt={image.tags} webformatURL={image.webformatURL} largeImageURL={image.largeImageURL} />
               )
           })}
-      </List>;
+      </List>
+      }
   }
 }
