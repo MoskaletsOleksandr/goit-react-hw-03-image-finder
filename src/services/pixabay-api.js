@@ -17,14 +17,16 @@ export class PixabayAPI {
       }&image_type=photo&orientation=horizontal&page=${this.page}&per_page=${
         this.per_page
       }`
-    ).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        if (data.hits.length !== 0) {
+          return data;
+        }
 
-      return Promise.reject(
-        new Error(`Картинок по запиту ${this.searchedWord}не знайдено`)
-      );
-    });
+        return Promise.reject(
+          new Error(`Картинок по запиту ${this.searchedWord} не знайдено`)
+        );
+      });
   }
 }
