@@ -49,6 +49,8 @@ export class ImageGallery extends Component {
     }
   }
 
+
+
   handleMoreBtnClick = () => {
     this.setState({ status: Status.PENDING });
     pixabayAPI.page += 1;
@@ -71,6 +73,7 @@ export class ImageGallery extends Component {
   render() {
     const { images, status } = this.state;
 
+
     if (status === 'idle') {
       return <div>Введіть запит для пошуку.</div>;
     }
@@ -82,6 +85,8 @@ export class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <div>
+                        
+
           <List>
             {images &&
               images.map(image => {
@@ -105,6 +110,7 @@ export class ImageGallery extends Component {
               </button>
             )}
           </List>
+
         </div>
       );
     }
