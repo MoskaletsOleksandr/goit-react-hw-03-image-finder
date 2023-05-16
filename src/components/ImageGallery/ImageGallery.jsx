@@ -3,6 +3,8 @@ import { PixabayAPI } from '../../services/pixabay-api';
 import { Component } from 'react';
 import { ImageGalleryItem } from './ImageGalleryItem';
 // import { Button } from 'components/common/Button';
+import { Loader } from 'components/common/Loader';
+import { animateScroll } from 'react-scroll';
 
 const Status = {
   IDLE: 'idle',
@@ -21,7 +23,7 @@ export class ImageGallery extends Component {
     totalHits: null,
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const prevWord = prevProps.searchedWord;
     const nextWord = this.props.searchedWord;
 
@@ -48,12 +50,22 @@ export class ImageGallery extends Component {
   }
 
   handleMoreBtnClick = () => {
+    this.setState({ status: Status.PENDING });
     pixabayAPI.page += 1;
     pixabayAPI
       .fetchPhotos()
       .then(data =>
-        this.setState(({ images }) => ({ images: [...images, ...data.hits] }))
-      );
+        this.setState(({ images }) => ({ images: [...images, ...data.hits], status: Status.RESOLVED, }))
+    );
+    this.scrollMoreButton();
+  };
+
+    scrollMoreButton = () => {
+    animateScroll.scrollToBottom({
+      duration: 1000,
+      delay: 10,
+      smooth: 'linear',
+    });
   };
 
   render() {
@@ -61,6 +73,10 @@ export class ImageGallery extends Component {
 
     if (status === 'idle') {
       return <div>Введіть запит для пошуку.</div>;
+    }
+
+    if (status === 'pending') {
+      return <Loader />
     }
 
     if (status === 'resolved') {
