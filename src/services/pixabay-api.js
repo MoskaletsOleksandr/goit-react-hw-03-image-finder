@@ -25,7 +25,9 @@ export class PixabayAPI {
         }
 
         return Promise.reject(
-          new Error(`Картинок по запиту ${this.searchedWord} не знайдено`)
+          new Error(
+            `No pictures were found for the request "${this.searchedWord}"`
+          )
         );
       });
   }

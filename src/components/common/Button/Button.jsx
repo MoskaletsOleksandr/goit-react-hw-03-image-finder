@@ -1,13 +1,9 @@
-import { Component } from 'react';
-import { ButtonStyled } from './Button.styled';
+import { ButtonStyled, ButtonLabel } from './Button.styled';
 
-export class Button extends Component {
-  render() {
-    return (
-      <ButtonStyled>
-        {/* {props.label} */}
-        {/* <ButtonLabel></ButtonLabel> */}
-      </ButtonStyled>
-    );
-  }
-}
+export const Button = ({ loadMore, children }) => {
+  return (
+    <ButtonStyled onClick={loadMore}>
+      <ButtonLabel>{children}</ButtonLabel>
+    </ButtonStyled>
+  );
+};

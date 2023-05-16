@@ -30,7 +30,7 @@ export class SearchBar extends Component {
             value={this.state.searchedWord}
             onChange={this.handleWordChange}
           />
-          <Button />
+          <Button>Search</Button>
         </SearchForm>
       </Bar>
     );

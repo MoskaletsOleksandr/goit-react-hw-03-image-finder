@@ -2,7 +2,7 @@ import { List } from './ImageGallery.styled';
 import { PixabayAPI } from '../../services/pixabay-api';
 import { Component } from 'react';
 import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
-// import { Button } from 'components/common/Button';
+import { Button } from 'components/common/Button';
 import { Loader } from 'components/common/Loader';
 import { animateScroll } from 'react-scroll';
 
@@ -73,7 +73,7 @@ export class ImageGallery extends Component {
     const { images, status } = this.state;
 
     if (status === 'idle') {
-      return <div>Введіть запит для пошуку.</div>;
+      return <h3>Enter a search query.</h3>;
     }
 
     if (status === 'pending') {
@@ -97,14 +97,9 @@ export class ImageGallery extends Component {
                 );
               })}
             {this.state.totalHits >= pixabayAPI.loadedPhotos() && (
-              <button
-                type="button"
-                onClick={() => {
-                  this.handleMoreBtnClick();
-                }}
-              >
-                123456789
-              </button>
+              <Button type="button" loadMore={this.handleMoreBtnClick}>
+                Load more
+              </Button>
             )}
           </List>
         </div>
@@ -112,7 +107,7 @@ export class ImageGallery extends Component {
     }
 
     if (status === 'rejected') {
-      return <h2>{this.state.error}</h2>
+      return <h3>{this.state.error}</h3>;
     }
   }
 }

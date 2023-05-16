@@ -28,9 +28,6 @@ export class App extends Component {
   render() {
     return (
       <Container>
-        <button type="button" onClick={this.toggleModal}>
-          modal
-        </button>
         {this.state.showModal && (
           <Modal onClose={this.toggleModal}>
             <img
