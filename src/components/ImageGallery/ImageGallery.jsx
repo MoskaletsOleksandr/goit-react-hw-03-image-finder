@@ -2,7 +2,7 @@ import { List } from './ImageGallery.styled';
 import { PixabayAPI } from '../../services/pixabay-api';
 import { Component } from 'react';
 import { ImageGalleryItem } from './ImageGalleryItem';
-import { Button } from 'components/common/Button';
+// import { Button } from 'components/common/Button';
 
 const Status = {
   IDLE: 'idle',
