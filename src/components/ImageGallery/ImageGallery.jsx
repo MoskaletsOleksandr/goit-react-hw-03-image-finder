@@ -18,6 +18,7 @@ export class ImageGallery extends Component {
     images: null,
     error: null,
     status: Status.IDLE,
+    totalHits: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -32,9 +33,13 @@ export class ImageGallery extends Component {
       pixabayAPI.page = 1;
 
       pixabayAPI
-        .fetchPhotos(nextWord)
+        .fetchPhotos()
         .then(data =>
-          this.setState({ images: data.hits, status: Status.RESOLVED })
+          this.setState({
+            images: data.hits,
+            status: Status.RESOLVED,
+            totalHits: data.totalHits,
+          })
         )
         .catch(error =>
           this.setState({ error: error.message, status: Status.REJECTED })
@@ -42,34 +47,49 @@ export class ImageGallery extends Component {
     }
   }
 
-  handleMoreBtnClick = (e) => {
-    console.log(e)
-  }
+  handleMoreBtnClick = () => {
+    pixabayAPI.page += 1;
+    pixabayAPI
+      .fetchPhotos()
+      .then(data =>
+        this.setState(({ images }) => ({ images: [...images, ...data.hits] }))
+      );
+  };
 
   render() {
     const { images, status } = this.state;
 
     if (status === 'idle') {
-      return <div>Введіть запит для пошуку.</div>
+      return <div>Введіть запит для пошуку.</div>;
     }
 
     if (status === 'resolved') {
       return (
-        <List>
-          {images &&
-            images.map(image => {
-              return (
-                <ImageGalleryItem
-                  key={image.id}
-                  alt={image.tags}
-                  webformatURL={image.webformatURL}
-                  largeImageURL={image.largeImageURL}
-                />
-              );
-            })}
-                  <Button type='button' onClick={this.handleMoreBtnClick}></Button>
-
-        </List>
+        <div>
+          <List>
+            {images &&
+              images.map(image => {
+                return (
+                  <ImageGalleryItem
+                    key={image.id}
+                    alt={image.tags}
+                    webformatURL={image.webformatURL}
+                    largeImageURL={image.largeImageURL}
+                  />
+                );
+              })}
+            {this.state.totalHits >= pixabayAPI.loadedPhotos() && (
+              <button
+                type="button"
+                onClick={() => {
+                  this.handleMoreBtnClick();
+                }}
+              >
+                123456789
+              </button>
+            )}
+          </List>
+        </div>
       );
     }
   }

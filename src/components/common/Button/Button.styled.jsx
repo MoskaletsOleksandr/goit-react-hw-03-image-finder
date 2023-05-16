@@ -1,21 +1,21 @@
 import styled from '@emotion/styled';
 
 export const ButtonStyled = styled.button`
-  display: inline-block;
-  width: 48px;
-  height: 48px;
-  border: 0;
-  background-size: 40%;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.6;
-  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  outline: none;
-  background-color: red;
+  min-width: 100px;
+  width: 150px;
+  height: 32px;
 
-  &:hover {
-    opacity: 1;
+  border: none;
+  border-radius: 4px;
+
+  transition: background-color 500ms, transform 500ms;
+
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: #33cc33;
+    transform: scale(1.1);
   }
 `;
 
