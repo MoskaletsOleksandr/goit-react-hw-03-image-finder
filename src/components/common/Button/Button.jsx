@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { ButtonStyled, ButtonLabel } from './Button.styled';
 
 export const Button = ({ loadMore, children }) => {
@@ -6,4 +7,9 @@ export const Button = ({ loadMore, children }) => {
       <ButtonLabel>{children}</ButtonLabel>
     </ButtonStyled>
   );
+};
+
+Button.propTypes = {
+  loadMore: PropTypes.func,
+  children: PropTypes.string.isRequired,
 };

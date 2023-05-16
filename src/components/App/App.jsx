@@ -9,6 +9,7 @@ export class App extends Component {
     searchedWord: '',
     showModal: false,
     largeImageURL: null,
+    alt: null,
   };
 
   handleSearchFormSubmit = searchedWord => {
@@ -19,10 +20,11 @@ export class App extends Component {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
 
-  openModal = largeImgURL => {
+  openModal = (largeImgURL, tags) => {
     this.setState({
       showModal: true,
       largeImageURL: largeImgURL,
+      alt: tags,
     });
   };
   render() {
@@ -32,7 +34,7 @@ export class App extends Component {
           <Modal onClose={this.toggleModal}>
             <img
               src={this.state.largeImageURL}
-              alt=""
+              alt={this.state.alt}
               width={1100}
               height={800}
             />

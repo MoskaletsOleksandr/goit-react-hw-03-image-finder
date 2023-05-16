@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { List } from './ImageGallery.styled';
 import { PixabayAPI } from '../../services/pixabay-api';
 import { Component } from 'react';
@@ -111,3 +112,8 @@ export class ImageGallery extends Component {
     }
   }
 }
+
+ImageGallery.propTypes = {
+  openModal: PropTypes.func.isRequired,
+  searchedWord: PropTypes.string.isRequired,
+};
