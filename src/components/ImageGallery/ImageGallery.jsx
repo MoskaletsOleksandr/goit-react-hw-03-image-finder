@@ -82,7 +82,7 @@ export class ImageGallery extends Component {
 
     if (status === 'resolved') {
       return (
-        <div>
+        <>
           <List>
             {images &&
               images.map(image => {
@@ -96,13 +96,13 @@ export class ImageGallery extends Component {
                   />
                 );
               })}
-            {this.state.totalHits >= pixabayAPI.loadedPhotos() && (
-              <Button type="button" loadMore={this.handleMoreBtnClick}>
-                Load more
-              </Button>
-            )}
           </List>
-        </div>
+          {this.state.totalHits >= pixabayAPI.loadedPhotos() && (
+            <Button type="button" loadMore={this.handleMoreBtnClick}>
+              Load more
+            </Button>
+          )}
+        </>
       );
     }
 
