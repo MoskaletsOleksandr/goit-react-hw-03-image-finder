@@ -1,7 +1,7 @@
 import { List } from './ImageGallery.styled';
 import { PixabayAPI } from '../../services/pixabay-api';
 import { Component } from 'react';
-import { ImageGalleryItem } from './ImageGalleryItem';
+import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
 // import { Button } from 'components/common/Button';
 import { Loader } from 'components/common/Loader';
 import { animateScroll } from 'react-scroll';
@@ -49,20 +49,19 @@ export class ImageGallery extends Component {
     }
   }
 
-
-
   handleMoreBtnClick = () => {
     this.setState({ status: Status.PENDING });
     pixabayAPI.page += 1;
-    pixabayAPI
-      .fetchPhotos()
-      .then(data =>
-        this.setState(({ images }) => ({ images: [...images, ...data.hits], status: Status.RESOLVED, }))
+    pixabayAPI.fetchPhotos().then(data =>
+      this.setState(({ images }) => ({
+        images: [...images, ...data.hits],
+        status: Status.RESOLVED,
+      }))
     );
     this.scrollMoreButton();
   };
 
-    scrollMoreButton = () => {
+  scrollMoreButton = () => {
     animateScroll.scrollToBottom({
       duration: 1000,
       delay: 10,
@@ -73,20 +72,17 @@ export class ImageGallery extends Component {
   render() {
     const { images, status } = this.state;
 
-
     if (status === 'idle') {
       return <div>Введіть запит для пошуку.</div>;
     }
 
     if (status === 'pending') {
-      return <Loader />
+      return <Loader />;
     }
 
     if (status === 'resolved') {
       return (
         <div>
-                        
-
           <List>
             {images &&
               images.map(image => {
@@ -96,6 +92,7 @@ export class ImageGallery extends Component {
                     alt={image.tags}
                     webformatURL={image.webformatURL}
                     largeImageURL={image.largeImageURL}
+                    openModal={this.props.openModal}
                   />
                 );
               })}
@@ -110,9 +107,12 @@ export class ImageGallery extends Component {
               </button>
             )}
           </List>
-
         </div>
       );
+    }
+
+    if (status === 'rejected') {
+      return <h2>{this.state.error}</h2>
     }
   }
 }
