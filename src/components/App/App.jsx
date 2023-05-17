@@ -3,6 +3,7 @@ import { Container } from './App.styled';
 import { SearchBar } from 'components/SearchBar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Modal } from 'components/common/Modal';
+import { Section } from 'components/common/Section';
 
 export class App extends Component {
   state = {
@@ -41,10 +42,12 @@ export class App extends Component {
           </Modal>
         )}
         <SearchBar onSubmit={this.handleSearchFormSubmit} />
-        <ImageGallery
-          searchedWord={this.state.searchedWord}
-          openModal={this.openModal}
-        ></ImageGallery>
+        <Section>
+          <ImageGallery
+            searchedWord={this.state.searchedWord}
+            openModal={this.openModal}
+          ></ImageGallery>
+        </Section>
       </Container>
     );
   }

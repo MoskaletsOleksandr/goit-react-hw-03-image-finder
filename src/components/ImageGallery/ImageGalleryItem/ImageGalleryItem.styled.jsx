@@ -1,19 +1,21 @@
 import styled from '@emotion/styled';
 
 export const Item = styled.li`
-  border-radius: 2px;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  height: 200px;
 `;
 
 export const GalleryImg = styled.img`
   width: 100%;
-  height: 260px;
+  height: 100%;
   object-fit: cover;
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  object-position: center;
+  transition: transform 0.3s ease-in-out;
 
   &:hover {
-    transform: scale(1.03);
-    cursor: zoom-in;
+    transform: scale(1.05);
   }
 `;
