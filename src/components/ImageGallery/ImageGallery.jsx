@@ -28,24 +28,22 @@ export class ImageGallery extends Component {
     const prevWord = prevProps.searchedWord;
     const nextWord = this.props.searchedWord;
 
-    pixabayAPI.searchedWord = nextWord;
-
     if (prevWord !== nextWord) {
       this.setState({ status: Status.PENDING });
-
+      pixabayAPI.searchedWord = nextWord;
       pixabayAPI.page = 1;
 
       pixabayAPI
         .fetchPhotos()
-        .then(data =>
+        .then(({ hits, totalHits }) =>
           this.setState({
-            images: data.hits,
+            images: hits,
             status: Status.RESOLVED,
-            totalHits: data.totalHits,
+            totalHits,
           })
         )
-        .catch(error =>
-          this.setState({ error: error.message, status: Status.REJECTED })
+        .catch(({ message }) =>
+          this.setState({ error: message, status: Status.REJECTED })
         );
     }
   }
@@ -53,12 +51,13 @@ export class ImageGallery extends Component {
   handleMoreBtnClick = () => {
     this.setState({ status: Status.PENDING });
     pixabayAPI.page += 1;
-    pixabayAPI.fetchPhotos().then(data =>
+    pixabayAPI.fetchPhotos().then(({hits}) =>
       this.setState(({ images }) => ({
-        images: [...images, ...data.hits],
+        images: [...images, ...hits],
         status: Status.RESOLVED,
       }))
     );
+    
     this.scrollMoreButton();
   };
 
@@ -71,7 +70,7 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { images, status } = this.state;
+    const { images, status, error, totalHits } = this.state;
 
     if (status === 'idle') {
       return <h3>Enter a search query.</h3>;
@@ -86,19 +85,19 @@ export class ImageGallery extends Component {
         <>
           <List>
             {images &&
-              images.map(image => {
+              images.map(({ id, tags, webformatURL, largeImageURL }) => {
                 return (
                   <ImageGalleryItem
-                    key={image.id}
-                    alt={image.tags}
-                    webformatURL={image.webformatURL}
-                    largeImageURL={image.largeImageURL}
+                    key={id}
+                    alt={tags}
+                    webformatURL={webformatURL}
+                    largeImageURL={largeImageURL}
                     openModal={this.props.openModal}
                   />
                 );
               })}
           </List>
-          {this.state.totalHits >= pixabayAPI.loadedPhotos() && (
+          {totalHits >= pixabayAPI.loadedPhotos() && (
             <Button type="button" loadMore={this.handleMoreBtnClick}>
               Load more
             </Button>
@@ -108,7 +107,7 @@ export class ImageGallery extends Component {
     }
 
     if (status === 'rejected') {
-      return <h3>{this.state.error}</h3>;
+      return <h3>{error}</h3>;
     }
   }
 }

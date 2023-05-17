@@ -29,25 +29,27 @@ export class App extends Component {
     });
   };
   render() {
+    const { searchedWord, showModal, largeImageURL, alt } = this.state;
+
     return (
       <Container>
-        {this.state.showModal && (
+        <SearchBar onSubmit={this.handleSearchFormSubmit} />
+        <Section>
+          <ImageGallery
+            searchedWord={searchedWord}
+            openModal={this.openModal}
+          ></ImageGallery>
+        </Section>
+        {showModal && (
           <Modal onClose={this.toggleModal}>
             <img
-              src={this.state.largeImageURL}
-              alt={this.state.alt}
+              src={largeImageURL}
+              alt={alt}
               width={1100}
               height={800}
             />
           </Modal>
         )}
-        <SearchBar onSubmit={this.handleSearchFormSubmit} />
-        <Section>
-          <ImageGallery
-            searchedWord={this.state.searchedWord}
-            openModal={this.openModal}
-          ></ImageGallery>
-        </Section>
       </Container>
     );
   }
